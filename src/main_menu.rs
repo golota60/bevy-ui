@@ -16,10 +16,10 @@ const PRESSED_BUTTON_OUTER: Color = Color::rgb(0.6, 0.6, 0.2);
 struct ButtonTexts;
 
 impl ButtonTexts {
-    pub const START: &str = "Start";
-    pub const CONTINUE: &str = "Continue";
-    pub const OPTIONS: &str = "Options";
-    pub const QUIT: &str = "Quit";
+    pub const START: &'static str = "Start";
+    pub const CONTINUE: &'static str = "Continue";
+    pub const OPTIONS: &'static str = "Options";
+    pub const QUIT: &'static str = "Quit";
 }
 
 fn create_ui_button(text: String) -> impl FnOnce(&mut ChildBuilder) {
@@ -99,7 +99,7 @@ pub fn update_menu(
         (Changed<Interaction>, With<Button>),
     >,
     text_query: Query<&mut Text>,
-    mouse: Res<Input<MouseButton>>,
+    mouse: Res<ButtonInput<MouseButton>>,
     mut next_app_state: ResMut<NextState<AppState>>,
     mut app_exit_events: ResMut<Events<bevy::app::AppExit>>,
 ) {

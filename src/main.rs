@@ -1,4 +1,6 @@
+mod game;
 mod main_menu;
+mod utils;
 
 use bevy::{prelude::*, winit::WinitSettings};
 
@@ -20,7 +22,7 @@ fn main() {
         // ))
         // Only run the app when there is user input. This will significantly reduce CPU/GPU use.
         .insert_resource(WinitSettings::desktop_app())
-        .add_state::<AppState>()
+        .init_state::<AppState>()
         // Main menu systems
         .add_systems(
             Startup,
@@ -30,6 +32,11 @@ fn main() {
             Update,
             main_menu::update_menu.run_if(in_state(AppState::MainMenu)),
         )
-        //
+        .add_systems(OnExit(AppState::MainMenu), utils::cleanup_system::<Node>)
+        // Game system
+        .add_systems(
+            OnEnter(AppState::InGame),
+            game::setup.run_if(in_state(AppState::InGame)),
+        )
         .run();
 }
